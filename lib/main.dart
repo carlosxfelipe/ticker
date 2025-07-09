@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ticker/theme/theme.dart';
+import 'package:ticker/routes/router.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +11,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      routerConfig: router,
+      builder: (context, child) {
+        final brightness = MediaQuery.of(context).platformBrightness;
+
+        AppTheme.setSystemUIOverlayStyle(brightness);
+
+        return child!;
+      },
     );
   }
 }
