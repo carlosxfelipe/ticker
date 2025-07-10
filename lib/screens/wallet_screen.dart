@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:ticker/widgets.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class WalletScreen extends StatelessWidget {
+  const WalletScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
-      currentIndex: 2, // Índice correspondente à página de "Perfil"
+      currentIndex: 1, // Índice correspondente à página de "Carteira"
       child: Scaffold(
-        appBar: CustomAppBar(titleText: 'Perfil', onIconPressed: () {}),
-        body: ProfileBody(),
+        appBar: CustomAppBar(titleText: 'Carteira', onIconPressed: () {}),
+        body: WalletBody(),
       ),
     );
   }
 }
 
-class ProfileBody extends StatelessWidget {
-  const ProfileBody({super.key});
+class WalletBody extends StatelessWidget {
+  const WalletBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ProfileBody extends StatelessWidget {
       padding: EdgeInsets.only(left: 16, top: 16),
       child: Align(
         alignment: Alignment.topLeft,
-        child: Text('Tela de Perfil', style: TextStyle(fontSize: 17.0)),
+        child: Text('Tela de Carteira', style: TextStyle(fontSize: 17.0)),
       ),
     );
   }

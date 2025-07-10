@@ -26,7 +26,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         context.go('/');
         break;
       case 1:
-        context.go('/orders');
+        context.go('/wallet');
         break;
       case 2:
         context.go('/profile');
@@ -59,11 +59,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              widget.currentIndex == 1
-                  ? Icons.shopping_bag
-                  : Icons.shopping_bag_outlined,
+              widget.currentIndex == 1 ? Icons.wallet : Icons.wallet_outlined,
             ),
-            label: 'Pedidos',
+            label: 'Carteira',
           ),
           BottomNavigationBarItem(
             icon: Icon(
