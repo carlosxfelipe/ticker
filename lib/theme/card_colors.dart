@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+
+final List<Color> lightCardColors = [
+  Colors.blue.shade50,
+  Colors.green.shade50,
+  Colors.orange.shade50,
+  Colors.purple.shade50,
+  Colors.red.shade50,
+  Colors.teal.shade50,
+  Colors.amber.shade50,
+  Colors.cyan.shade50,
+  Colors.indigo.shade50,
+  Colors.lime.shade50,
+  Colors.pink.shade50,
+  Colors.lightBlue.shade50,
+  Colors.lightGreen.shade50,
+  Colors.deepOrange.shade50,
+  Colors.deepPurple.shade50,
+  Colors.brown.shade50,
+  Colors.grey.shade100,
+  Colors.blueGrey.shade50,
+];
+
+final List<Color> darkCardColors = [
+  Colors.blue.shade200.withAlpha(38),
+  Colors.green.shade200.withAlpha(38),
+  Colors.orange.shade200.withAlpha(38),
+  Colors.purple.shade200.withAlpha(38),
+  Colors.red.shade200.withAlpha(38),
+  Colors.teal.shade200.withAlpha(38),
+  Colors.amber.shade200.withAlpha(38),
+  Colors.cyan.shade200.withAlpha(38),
+  Colors.indigo.shade200.withAlpha(38),
+  Colors.lime.shade200.withAlpha(38),
+  Colors.pink.shade200.withAlpha(38),
+  Colors.lightBlue.shade200.withAlpha(38),
+  Colors.lightGreen.shade200.withAlpha(38),
+  Colors.deepOrange.shade200.withAlpha(38),
+  Colors.deepPurple.shade200.withAlpha(38),
+  Colors.brown.shade200.withAlpha(38),
+  Colors.grey.shade300.withAlpha(38),
+  Colors.blueGrey.shade200.withAlpha(38),
+];
