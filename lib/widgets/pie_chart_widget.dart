@@ -43,57 +43,39 @@ class AssetsPieChart extends StatelessWidget {
     // Gerar seções do gráfico
     int colorIndex = 0;
     final chartSections =
-        entries.map((entry) {
+        entries.asMap().entries.map((entry) {
+          final index = entry.key;
+          final ticker = entry.value.key;
+          final value = entry.value.value;
           final color = cardColors[colorIndex % cardColors.length];
           colorIndex++;
+
+          final percent = (value / total) * 100;
+          final showLabel = index < 20;
+
           return PieChartSectionData(
-            value: entry.value,
-            title: '',
+            value: value,
+            title: showLabel ? '$ticker\n${percent.toStringAsFixed(1)}%' : '',
+            titleStyle: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+            titlePositionPercentageOffset: showLabel ? 1.3 : 0.0,
             color: color,
             radius: 80,
           );
         }).toList();
 
-    // Legenda dos 20 maiores
-    colorIndex = 0;
-    final legendItems =
-        entries.take(20).map((entry) {
-          final percent = (entry.value / total) * 100;
-          final color = cardColors[colorIndex % cardColors.length];
-          colorIndex++;
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(width: 12, height: 12, color: color),
-                const SizedBox(width: 6),
-                Text('${entry.key} (${percent.toStringAsFixed(1)}%)'),
-              ],
-            ),
-          );
-        }).toList();
-
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: SizedBox(
-              height: 340,
-              child: PieChart(
-                PieChartData(
-                  sections: chartSections,
-                  centerSpaceRadius: 40,
-                  sectionsSpace: 2,
-                ),
-              ),
-            ),
+    return Center(
+      child: SizedBox(
+        height: 360,
+        child: PieChart(
+          PieChartData(
+            sections: chartSections,
+            centerSpaceRadius: 40,
+            sectionsSpace: 2,
           ),
-          const SizedBox(height: 16),
-          Wrap(spacing: 16, runSpacing: 8, children: legendItems),
-        ],
+        ),
       ),
     );
   }

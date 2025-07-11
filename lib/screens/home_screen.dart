@@ -61,9 +61,20 @@ class _HomeBodyState extends State<HomeBody> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Distribuição da Carteira',
-                style: TextStyle(fontSize: 17),
+              Row(
+                children: [
+                  Icon(
+                    Icons.pie_chart,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Distribuição da Carteira',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               AssetsPieChart(assets: assets),
