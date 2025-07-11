@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final List<Color> lightCardColors = [
+final List<Color> lightCardColorsSoft = [
   Colors.blue.shade50,
   Colors.green.shade50,
   Colors.orange.shade50,
@@ -21,7 +21,7 @@ final List<Color> lightCardColors = [
   Colors.blueGrey.shade50,
 ];
 
-final List<Color> darkCardColors = [
+final List<Color> darkCardColorsSoft = [
   Colors.blue.shade200.withAlpha(38),
   Colors.green.shade200.withAlpha(38),
   Colors.orange.shade200.withAlpha(38),
@@ -40,4 +40,46 @@ final List<Color> darkCardColors = [
   Colors.brown.shade200.withAlpha(38),
   Colors.grey.shade300.withAlpha(38),
   Colors.blueGrey.shade200.withAlpha(38),
+];
+
+final List<Color> lightCardColorsBold = [
+  Colors.blue.shade600,
+  Colors.green.shade600,
+  Colors.orange.shade600,
+  Colors.purple.shade600,
+  Colors.red.shade600,
+  Colors.teal.shade600,
+  Colors.amber.shade600,
+  Colors.cyan.shade600,
+  Colors.indigo.shade600,
+  Colors.lime.shade600,
+  Colors.pink.shade600,
+  Colors.lightBlue.shade600,
+  Colors.lightGreen.shade600,
+  Colors.deepOrange.shade600,
+  Colors.deepPurple.shade600,
+  Colors.brown.shade600,
+  Colors.grey.shade600,
+  Colors.blueGrey.shade600,
+];
+
+final List<Color> darkCardColorsBold = [
+  Colors.blue.shade600.withAlpha(180),
+  Colors.green.shade600.withAlpha(180),
+  Colors.orange.shade600.withAlpha(180),
+  Colors.purple.shade600.withAlpha(180),
+  Colors.red.shade600.withAlpha(180),
+  Colors.teal.shade600.withAlpha(180),
+  Colors.amber.shade600.withAlpha(180),
+  Colors.cyan.shade600.withAlpha(180),
+  Colors.indigo.shade600.withAlpha(180),
+  Colors.lime.shade600.withAlpha(180),
+  Colors.pink.shade600.withAlpha(180),
+  Colors.lightBlue.shade600.withAlpha(180),
+  Colors.lightGreen.shade600.withAlpha(180),
+  Colors.deepOrange.shade600.withAlpha(180),
+  Colors.deepPurple.shade600.withAlpha(180),
+  Colors.brown.shade600.withAlpha(180),
+  Colors.grey.shade600.withAlpha(180),
+  Colors.blueGrey.shade600.withAlpha(180),
 ];

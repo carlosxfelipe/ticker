@@ -47,7 +47,7 @@ class _WalletBodyState extends State<WalletBody> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final cardColors = isDark ? darkCardColors : lightCardColors;
+    final cardColors = isDark ? darkCardColorsSoft : lightCardColorsSoft;
 
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: futureAssets,
