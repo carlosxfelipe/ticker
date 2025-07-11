@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ticker/theme/card_colors.dart';
 
 class AssetsPieChart extends StatelessWidget {
@@ -25,8 +26,12 @@ class AssetsPieChart extends StatelessWidget {
               .toDouble(),
     );
 
-    // Calcular valor por ativo
-    final List<MapEntry<String, double>> entries =
+    final totalFormatted = NumberFormat.currency(
+      locale: 'pt_BR',
+      symbol: 'R\$',
+    ).format(total);
+
+    final entries =
         assets
             .map(
               (e) => MapEntry(
@@ -69,12 +74,32 @@ class AssetsPieChart extends StatelessWidget {
     return Center(
       child: SizedBox(
         height: 360,
-        child: PieChart(
-          PieChartData(
-            sections: chartSections,
-            centerSpaceRadius: 40,
-            sectionsSpace: 2,
-          ),
+        width: 360,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            PieChart(
+              PieChartData(
+                sections: chartSections,
+                centerSpaceRadius: 60,
+                sectionsSpace: 2,
+              ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Total', style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 4),
+                Text(
+                  totalFormatted,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
