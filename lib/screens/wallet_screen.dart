@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:ticker/database/database_helper.dart';
+import 'package:ticker/services/asset_service.dart';
 import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
 
@@ -11,36 +11,7 @@ class WalletScreen extends StatelessWidget {
   final GlobalKey<WalletBodyState> walletBodyKey = GlobalKey<WalletBodyState>();
 
   Future<void> updateAllCurrentPrices(BuildContext context) async {
-    final assets = await DatabaseHelper().getAllAssets();
-
-    final dio = Dio(
-      BaseOptions(
-        headers: {'Authorization': 'Bearer ${dotenv.env['BRAPI_API_KEY']}'},
-      ),
-    );
-
-    int updatedCount = 0;
-
-    for (final asset in assets) {
-      final ticker = asset['ticker'];
-      try {
-        final response = await dio.get('https://brapi.dev/api/quote/$ticker');
-        final results = response.data['results'];
-        if (results != null && results.isNotEmpty) {
-          final currentPrice =
-              (results[0]['regularMarketPrice'] as num?)?.toDouble();
-          if (currentPrice != null) {
-            await DatabaseHelper().updateAsset({
-              ...asset,
-              'current_price': currentPrice,
-            });
-            updatedCount++;
-          }
-        }
-      } catch (e) {
-        debugPrint('Erro ao atualizar $ticker: $e');
-      }
-    }
+    final updatedCount = await AssetService.updateAllAssetsPricesFromBrapi();
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
