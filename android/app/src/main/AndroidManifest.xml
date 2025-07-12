@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permissão necessária para acesso à internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="ticker"
         android:name="${applicationName}"

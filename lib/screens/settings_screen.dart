@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/widgets.dart';
@@ -9,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
-      currentIndex: 2, // Índice correspondente à página de "Configurações"
+      currentIndex: 2,
       child: Scaffold(
         appBar: CustomAppBar(titleText: 'Configurações', onIconPressed: () {}),
         body: const SettingsBody(),
@@ -28,7 +29,6 @@ class SettingsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // const Text('Tela de Perfil', style: TextStyle(fontSize: 17.0)),
           Row(
             children: [
               Icon(
@@ -82,6 +82,28 @@ class SettingsBody extends StatelessWidget {
                 }
               }
             },
+          ),
+          const SizedBox(height: 32),
+          InkWell(
+            onTap: () async {
+              const url = 'https://github.com/carlosxfelipe';
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(
+                  Uri.parse(url),
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.link),
+                const SizedBox(width: 8),
+                const Text(
+                  'github.com/carlosxfelipe',
+                  style: TextStyle(fontSize: 16.0, color: Colors.blueAccent),
+                ),
+              ],
+            ),
           ),
         ],
       ),
