@@ -16,10 +16,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDb() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'assets.db');
-
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    final dir = await getApplicationDocumentsDirectory();
+    final path = join(dir.path, 'assets.db');
+    return openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -33,26 +32,18 @@ class DatabaseHelper {
     ''');
   }
 
-  // Inserir ativo
   Future<int> insertAsset(Map<String, dynamic> asset) async {
     final db = await database;
-    return await db.insert('assets', asset);
+    return db.insert('assets', asset);
   }
 
-  // Buscar todos os ativos
   Future<List<Map<String, dynamic>>> getAllAssets() async {
     final db = await database;
-    return await db.query('assets');
-  }
-
-  // Atualizar ativo
-  Future<int> updateAsset(int id, Map<String, dynamic> asset) async {
-    final db = await database;
-    return await db.update('assets', asset, where: 'id = ?', whereArgs: [id]);
+    return db.query('assets');
   }
 
   Future<int> deleteAsset(int id) async {
     final db = await database;
-    return await db.delete('assets', where: 'id = ?', whereArgs: [id]);
+    return db.delete('assets', where: 'id = ?', whereArgs: [id]);
   }
 }
