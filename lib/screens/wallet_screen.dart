@@ -5,7 +5,10 @@ import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
 
 class WalletScreen extends StatelessWidget {
-  const WalletScreen({super.key});
+  WalletScreen({super.key});
+
+  final GlobalKey<_WalletBodyState> walletBodyKey =
+      GlobalKey<_WalletBodyState>();
 
   @override
   Widget build(BuildContext context) {
@@ -13,27 +16,18 @@ class WalletScreen extends StatelessWidget {
       currentIndex: 1, // Índice correspondente à página de "Carteira"
       child: Scaffold(
         appBar: CustomAppBar(titleText: 'Carteira', onIconPressed: () {}),
-        body: const WalletBody(),
-        floatingActionButton: Builder(
-          builder:
-              (context) => FloatingActionButton(
-                onPressed: () async {
-                  await showDialog(
-                    context: context,
-                    builder:
-                        (_) => AddAssetDialog(
-                          onSaved:
-                              () =>
-                                  context
-                                      .findAncestorStateOfType<
-                                        _WalletBodyState
-                                      >()
-                                      ?.refreshAssets(),
-                        ),
-                  );
-                },
-                child: const Icon(Icons.add),
-              ),
+        body: WalletBody(key: walletBodyKey),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder:
+                  (_) => AddAssetDialog(
+                    onSaved: () => walletBodyKey.currentState?.refreshAssets(),
+                  ),
+            );
+          },
+          child: const Icon(Icons.add),
         ),
       ),
     );

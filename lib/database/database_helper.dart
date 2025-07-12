@@ -46,4 +46,9 @@ class DatabaseHelper {
     final db = await database;
     return db.delete('assets', where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<void> clearDatabase() async {
+    final db = await database;
+    await db.delete('assets');
+  }
 }
