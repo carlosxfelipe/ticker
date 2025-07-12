@@ -93,6 +93,12 @@ class SettingsBody extends StatelessWidget {
             icon: Icons.share,
             onPressed: () => BackupService.exportDatabase(context),
           ),
+          const SizedBox(height: 12),
+          Button(
+            label: 'Importar Banco de Dados',
+            icon: Icons.upload_file,
+            onPressed: () => BackupService.importDatabase(context),
+          ),
           const SizedBox(height: 32),
           Row(
             children: [
@@ -125,7 +131,7 @@ class SettingsBody extends StatelessWidget {
               if (await canLaunchUrl(Uri.parse(url))) {
                 await launchUrl(
                   Uri.parse(url),
-                  mode: LaunchMode.externalApplication,
+                  mode: LaunchMode.platformDefault,
                 );
               }
             },
