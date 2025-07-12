@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:ticker/theme/card_colors.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
-// import 'package:ticker/theme/theme.dart';
+import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
 
 class WalletScreen extends StatelessWidget {
@@ -16,6 +16,27 @@ class WalletScreen extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBar(titleText: 'Carteira', onIconPressed: () {}),
         body: const WalletBody(),
+        floatingActionButton: Builder(
+          builder:
+              (context) => FloatingActionButton(
+                onPressed: () async {
+                  await showDialog(
+                    context: context,
+                    builder:
+                        (_) => AddAssetDialog(
+                          onSaved:
+                              () =>
+                                  context
+                                      .findAncestorStateOfType<
+                                        _WalletBodyState
+                                      >()
+                                      ?.refreshAssets(),
+                        ),
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
+        ),
       ),
     );
   }
@@ -34,13 +55,13 @@ class _WalletBodyState extends State<WalletBody> {
   @override
   void initState() {
     super.initState();
-    futureAssets = loadMockAssetsFromJson();
+    refreshAssets();
   }
 
-  Future<List<Map<String, dynamic>>> loadMockAssetsFromJson() async {
-    final jsonString = await rootBundle.loadString('assets/mock_assets.json');
-    final List<dynamic> jsonList = json.decode(jsonString);
-    return jsonList.cast<Map<String, dynamic>>();
+  void refreshAssets() {
+    setState(() {
+      futureAssets = DatabaseHelper().getAllAssets();
+    });
   }
 
   @override
@@ -57,17 +78,24 @@ class _WalletBodyState extends State<WalletBody> {
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Erro ao carregar ativos'));
+          return const Center(child: Text('Erro ao carregar ativos'));
         }
 
         final assets = snapshot.data ?? [];
+
+        if (assets.isEmpty) {
+          return const Center(child: Text('Nenhum ativo cadastrado.'));
+        }
 
         return ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: assets.length,
           itemBuilder: (context, index) {
             final asset = assets[index];
-            final totalInvested = asset['quantity'] * asset['averagePrice'];
+            final quantity = (asset['quantity'] as int?) ?? 0;
+            final averagePrice =
+                (asset['average_price'] as num?)?.toDouble() ?? 0.0;
+            final totalInvested = quantity * averagePrice;
 
             return Card(
               color: cardColors[index % cardColors.length],
@@ -88,12 +116,45 @@ class _WalletBodyState extends State<WalletBody> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text('Quantidade: ${asset['quantity']}'),
-                    Text(
-                      'Preço Médio: R\$ ${asset['averagePrice'].toStringAsFixed(2)}',
-                    ),
+                    Text('Quantidade: $quantity'),
+                    Text('Preço Médio: R\$ ${averagePrice.toStringAsFixed(2)}'),
                     Text(
                       'Total Investido: R\$ ${totalInvested.toStringAsFixed(2)}',
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder:
+                                (_) => AlertDialog(
+                                  title: const Text('Remover ativo'),
+                                  content: const Text(
+                                    'Deseja remover este ativo?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.pop(context, false),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.pop(context, true),
+                                      child: const Text('Remover'),
+                                    ),
+                                  ],
+                                ),
+                          );
+                          if (confirm == true) {
+                            await DatabaseHelper().deleteAsset(asset['id']);
+                            refreshAssets();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -103,5 +164,155 @@ class _WalletBodyState extends State<WalletBody> {
         );
       },
     );
+  }
+}
+
+class AddAssetDialog extends StatefulWidget {
+  final VoidCallback onSaved;
+  const AddAssetDialog({super.key, required this.onSaved});
+
+  @override
+  State<AddAssetDialog> createState() => _AddAssetDialogState();
+}
+
+class _AddAssetDialogState extends State<AddAssetDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _tickerController = TextEditingController();
+  final _quantityController = TextEditingController();
+  final _priceController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Adicionar Ativo'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _tickerController,
+              decoration: const InputDecoration(labelText: 'Ticker'),
+              validator:
+                  (value) =>
+                      value == null || value.isEmpty
+                          ? 'Campo obrigatório'
+                          : null,
+            ),
+            TextFormField(
+              controller: _quantityController,
+              decoration: const InputDecoration(labelText: 'Quantidade'),
+              keyboardType: const TextInputType.numberWithOptions(),
+              validator:
+                  (value) =>
+                      value == null || value.isEmpty
+                          ? 'Campo obrigatório'
+                          : null,
+            ),
+            TextFormField(
+              controller: _priceController,
+              decoration: const InputDecoration(labelText: 'Preço Médio'),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              validator:
+                  (value) =>
+                      value == null || value.isEmpty
+                          ? 'Campo obrigatório'
+                          : null,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              final ticker = _tickerController.text.trim().toUpperCase();
+              final quantity = int.tryParse(_quantityController.text.trim());
+              final averagePrice = double.tryParse(
+                _priceController.text.trim().replaceAll(',', '.'),
+              );
+
+              if (quantity == null || averagePrice == null) {
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Valores numéricos inválidos.')),
+                );
+                return;
+              }
+
+              try {
+                await DatabaseHelper().insertAsset({
+                  'ticker': ticker,
+                  'quantity': quantity,
+                  'average_price': averagePrice,
+                });
+
+                if (!mounted) return;
+                widget.onSaved();
+                Navigator.of(context).pop();
+              } catch (e) {
+                if (!mounted) return;
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Erro ao salvar: $e')));
+              }
+            }
+          },
+          child: const Text('Salvar'),
+        ),
+      ],
+    );
+  }
+}
+
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
+  DatabaseHelper._internal();
+
+  static Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDb();
+    return _database!;
+  }
+
+  Future<Database> _initDb() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final path = join(dir.path, 'assets.db');
+    return openDatabase(path, version: 1, onCreate: _onCreate);
+  }
+
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE assets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        ticker TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        average_price REAL NOT NULL
+      )
+    ''');
+  }
+
+  Future<int> insertAsset(Map<String, dynamic> asset) async {
+    final db = await database;
+    return db.insert('assets', asset);
+  }
+
+  Future<List<Map<String, dynamic>>> getAllAssets() async {
+    final db = await database;
+    return db.query('assets');
+  }
+
+  Future<int> deleteAsset(int id) async {
+    final db = await database;
+    return db.delete('assets', where: 'id = ?', whereArgs: [id]);
   }
 }

@@ -3,6 +3,7 @@ import 'package:ticker/theme/theme.dart';
 import 'package:ticker/routes/router.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }
 
