@@ -90,13 +90,34 @@ class SettingsBody extends StatelessWidget {
             onPressed: () => BackupService.exportDatabase(context),
           ),
           const SizedBox(height: 32),
+          // NOVO TÍTULO: Apoio ao projeto
+          Row(
+            children: [
+              Icon(
+                FontAwesomeIcons.heart,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Apoie o Projeto',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Text(
             'Este projeto é open-source! Que tal contribuir com o desenvolvimento? 🙂',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 12),
-          InkWell(
-            onTap: () async {
+          Button(
+            label: 'github.com/carlosxfelipe',
+            icon: FontAwesomeIcons.github,
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            onPressed: () async {
               const url = 'https://github.com/carlosxfelipe';
               if (await canLaunchUrl(Uri.parse(url))) {
                 await launchUrl(
@@ -105,22 +126,6 @@ class SettingsBody extends StatelessWidget {
                 );
               }
             },
-            child: Row(
-              children: [
-                FaIcon(
-                  FontAwesomeIcons.github,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'github.com/carlosxfelipe',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),
