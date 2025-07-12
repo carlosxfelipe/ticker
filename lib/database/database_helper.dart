@@ -37,14 +37,24 @@ class DatabaseHelper {
     return db.insert('assets', asset);
   }
 
-  Future<List<Map<String, dynamic>>> getAllAssets() async {
+  Future<int> updateAsset(Map<String, dynamic> asset) async {
     final db = await database;
-    return db.query('assets');
+    return db.update(
+      'assets',
+      asset,
+      where: 'id = ?',
+      whereArgs: [asset['id']],
+    );
   }
 
   Future<int> deleteAsset(int id) async {
     final db = await database;
     return db.delete('assets', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> getAllAssets() async {
+    final db = await database;
+    return db.query('assets');
   }
 
   Future<void> clearDatabase() async {

@@ -107,6 +107,19 @@ class WalletBodyState extends State<WalletBody> {
                           ),
                           const Spacer(),
                           IconButton(
+                            icon: const Icon(Icons.edit_outlined),
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder:
+                                    (_) => EditAssetDialog(
+                                      asset: asset,
+                                      onSaved: refreshAssets,
+                                    ),
+                              );
+                            },
+                          ),
+                          IconButton(
                             icon: const Icon(Icons.delete_outline),
                             onPressed: () async {
                               final confirm = await showDialog<bool>(
@@ -207,7 +220,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
