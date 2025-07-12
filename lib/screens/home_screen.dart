@@ -1,8 +1,7 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:ticker/services/asset_service.dart';
 
+import 'package:ticker/database/database_helper.dart';
+import 'package:ticker/services/asset_service.dart';
 import 'package:ticker/widgets.dart';
 import 'package:ticker/widgets/pie_chart_widget.dart';
 
@@ -46,13 +45,25 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   void initState() {
     super.initState();
-    futureAssets = loadAssets();
+    futureAssets = DatabaseHelper().getAllAssets();
   }
 
-  Future<List<Map<String, dynamic>>> loadAssets() async {
-    final jsonString = await rootBundle.loadString('assets/mock_assets.json');
-    final List<dynamic> jsonList = json.decode(jsonString);
-    return jsonList.cast<Map<String, dynamic>>();
+  Map<String, double> _calculatePortfolioTotals(
+    List<Map<String, dynamic>> assets,
+  ) {
+    double totalInvested = 0;
+    double totalCurrent = 0;
+
+    for (final asset in assets) {
+      final quantity = (asset['quantity'] as num).toDouble();
+      final averagePrice = (asset['average_price'] as num).toDouble();
+      final currentPrice = (asset['current_price'] as num?)?.toDouble();
+
+      totalInvested += quantity * averagePrice;
+      totalCurrent += quantity * (currentPrice ?? averagePrice);
+    }
+
+    return {'totalInvested': totalInvested, 'totalCurrent': totalCurrent};
   }
 
   @override
@@ -70,9 +81,21 @@ class _HomeBodyState extends State<HomeBody> {
             return const Center(child: Text('Erro ao carregar ativos'));
           }
 
+          final assets = snapshot.data ?? [];
+
+          if (assets.isEmpty) {
+            return const Center(child: Text('Nenhum ativo cadastrado.'));
+          }
+
+          final totals = _calculatePortfolioTotals(assets);
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              PortfolioSummary(
+                totalInvested: totals['totalInvested']!,
+                totalCurrent: totals['totalCurrent']!,
+              ),
               Row(
                 children: [
                   Icon(
@@ -89,7 +112,7 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
               ),
               const SizedBox(height: 16),
-              Expanded(child: Center(child: AssetsPieChart())),
+              const Expanded(child: Center(child: AssetsPieChart())),
             ],
           );
         },
