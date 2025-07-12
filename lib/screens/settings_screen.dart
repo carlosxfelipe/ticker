@@ -98,9 +98,12 @@ class SettingsBody extends StatelessWidget {
               children: [
                 const Icon(Icons.link),
                 const SizedBox(width: 8),
-                const Text(
+                Text(
                   'github.com/carlosxfelipe',
-                  style: TextStyle(fontSize: 16.0, color: Colors.blueAccent),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ],
             ),
