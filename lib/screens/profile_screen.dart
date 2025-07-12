@@ -34,7 +34,6 @@ class ProfileBody extends StatelessWidget {
             label: 'Apagar Base de Dados',
             icon: Icons.delete_forever,
             backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
             onPressed: () async {
               final confirm = await showDialog<bool>(
                 context: context,

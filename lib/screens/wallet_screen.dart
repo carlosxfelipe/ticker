@@ -7,8 +7,7 @@ import 'package:ticker/widgets.dart';
 class WalletScreen extends StatelessWidget {
   WalletScreen({super.key});
 
-  final GlobalKey<_WalletBodyState> walletBodyKey =
-      GlobalKey<_WalletBodyState>();
+  final GlobalKey<WalletBodyState> walletBodyKey = GlobalKey<WalletBodyState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +37,10 @@ class WalletBody extends StatefulWidget {
   const WalletBody({super.key});
 
   @override
-  State<WalletBody> createState() => _WalletBodyState();
+  State<WalletBody> createState() => WalletBodyState();
 }
 
-class _WalletBodyState extends State<WalletBody> {
+class WalletBodyState extends State<WalletBody> {
   late Future<List<Map<String, dynamic>>> futureAssets;
 
   @override
@@ -245,7 +244,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
                   'average_price': averagePrice,
                 });
 
-                if (!mounted) return;
+                if (!context.mounted) return;
                 widget.onSaved();
                 Navigator.of(context).pop();
               } catch (e) {
