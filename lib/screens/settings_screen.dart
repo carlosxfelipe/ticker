@@ -26,6 +26,10 @@ class SettingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final buttonBackground = isDark ? Colors.white : Colors.black;
+    final buttonForeground = isDark ? Colors.black : Colors.white;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -90,7 +94,6 @@ class SettingsBody extends StatelessWidget {
             onPressed: () => BackupService.exportDatabase(context),
           ),
           const SizedBox(height: 32),
-          // NOVO TÍTULO: Apoio ao projeto
           Row(
             children: [
               Icon(
@@ -115,8 +118,8 @@ class SettingsBody extends StatelessWidget {
           Button(
             label: 'github.com/carlosxfelipe',
             icon: FontAwesomeIcons.github,
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
+            backgroundColor: buttonBackground,
+            foregroundColor: buttonForeground,
             onPressed: () async {
               const url = 'https://github.com/carlosxfelipe';
               if (await canLaunchUrl(Uri.parse(url))) {
