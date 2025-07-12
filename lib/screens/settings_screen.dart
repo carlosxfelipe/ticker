@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -49,6 +50,7 @@ class SettingsBody extends StatelessWidget {
             label: 'Apagar Base de Dados',
             icon: Icons.delete_forever,
             backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
             onPressed: () async {
               final confirm = await showDialog<bool>(
                 context: context,
@@ -84,6 +86,11 @@ class SettingsBody extends StatelessWidget {
             },
           ),
           const SizedBox(height: 32),
+          Text(
+            'Este projeto é open-source! Que tal contribuir com o desenvolvimento? 🙂',
+            style: TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 12),
           InkWell(
             onTap: () async {
               const url = 'https://github.com/carlosxfelipe';
@@ -96,7 +103,10 @@ class SettingsBody extends StatelessWidget {
             },
             child: Row(
               children: [
-                const Icon(Icons.link),
+                FaIcon(
+                  FontAwesomeIcons.github,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   'github.com/carlosxfelipe',

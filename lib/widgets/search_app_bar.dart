@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool showIcon;
+  final String? iconName;
   final ValueChanged<String>? onChanged;
 
-  const SearchAppBar({super.key, this.showIcon = true, this.onChanged});
+  const SearchAppBar({super.key, this.iconName, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final hasValidIcon = iconName != null && _getIconByName(iconName!) != null;
+
     return AppBar(
       backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: theme.colorScheme.surface,
-      // automaticallyImplyLeading: false,
       title: Row(
         children: [
-          Expanded(flex: 7, child: SearchAppBarContent(onChanged: onChanged)),
-          if (showIcon)
+          Expanded(
+            flex: hasValidIcon ? 7 : 8,
+            child: SearchAppBarContent(onChanged: onChanged),
+          ),
+          if (hasValidIcon)
             Expanded(
               flex: 1,
               child: Center(
                 child: IconButton(
                   icon: Icon(
-                    Icons.shopping_cart_outlined,
+                    _getIconByName(iconName!)!,
                     color: theme.colorScheme.onSurface,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // ação do ícone
+                  },
                 ),
               ),
             ),
@@ -36,6 +42,24 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  IconData? _getIconByName(String name) {
+    // Adicione mais ícones conforme necessário
+    switch (name) {
+      case 'shopping_cart_outlined':
+        return Icons.shopping_cart_outlined;
+      case 'favorite':
+        return Icons.favorite;
+      case 'search':
+        return Icons.search;
+      case 'home':
+        return Icons.home;
+      case 'refresh':
+        return Icons.refresh;
+      default:
+        return null; // ícone não reconhecido
+    }
+  }
 }
 
 class SearchAppBarContent extends StatelessWidget {
