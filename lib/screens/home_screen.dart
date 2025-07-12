@@ -77,7 +77,7 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
               ),
               const SizedBox(height: 16),
-              AssetsPieChart(assets: assets),
+              AssetsPieChart(),
             ],
           );
         },
