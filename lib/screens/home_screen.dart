@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
       currentIndex: 0, // Índice correspondente à página de "Início"
       child: Scaffold(
         appBar: SearchAppBar(iconName: 'refresh'),
-        body: HomeBody(),
+        body: const HomeBody(),
       ),
     );
   }
@@ -53,7 +53,7 @@ class _HomeBodyState extends State<HomeBody> {
           }
 
           if (snapshot.hasError) {
-            return const Text('Erro ao carregar ativos');
+            return const Center(child: Text('Erro ao carregar ativos'));
           }
 
           final assets = snapshot.data ?? [];
@@ -77,7 +77,7 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
               ),
               const SizedBox(height: 16),
-              AssetsPieChart(),
+              Expanded(child: Center(child: AssetsPieChart())),
             ],
           );
         },

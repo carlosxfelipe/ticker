@@ -30,29 +30,31 @@ class AssetsPieChart extends StatelessWidget {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final cardColors = isDark ? darkCardColorsBold : lightCardColorsBold;
 
-        final total = assets.fold<double>(
-          0.0,
-          (sum, item) =>
-              sum +
-              ((item['quantity'] as num) * (item['average_price'] as num))
-                  .toDouble(),
-        );
+        // Calcula valor por ativo, usando current_price se disponível
+        final assetValues =
+            assets.map((asset) {
+              final quantity = (asset['quantity'] as num).toDouble();
+              final averagePrice = (asset['average_price'] as num).toDouble();
+              final currentPrice = (asset['current_price'] as num?)?.toDouble();
+              final ticker = asset['ticker'] as String;
+
+              final value =
+                  currentPrice != null
+                      ? quantity * currentPrice
+                      : quantity * averagePrice;
+
+              return MapEntry(ticker, value);
+            }).toList();
+
+        final total = assetValues.fold<double>(0.0, (sum, e) => sum + e.value);
 
         final totalFormatted = NumberFormat.currency(
           locale: 'pt_BR',
           symbol: 'R\$',
         ).format(total);
 
-        final entries =
-            assets.map((e) {
-              final ticker = e['ticker'] as String;
-              final value =
-                  ((e['quantity'] as num) * (e['average_price'] as num))
-                      .toDouble();
-              return MapEntry(ticker, value);
-            }).toList();
-
-        entries.sort((a, b) => b.value.compareTo(a.value));
+        final entries = List<MapEntry<String, double>>.from(assetValues)
+          ..sort((a, b) => b.value.compareTo(a.value));
 
         int colorIndex = 0;
         final chartSections =
