@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
@@ -88,105 +87,100 @@ class WalletBodyState extends State<WalletBody> {
                 (asset['average_price'] as num?)?.toDouble() ?? 0.0;
             final totalInvested = quantity * averagePrice;
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Material(
                 color: cardColors[index % cardColors.length],
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        isDark
-                            ? Colors.white.withAlpha(20)
-                            : Colors.black.withAlpha(40),
-                    blurRadius: 12,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const SizedBox(width: 8),
-                        Text(
-                          asset['ticker'],
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            asset['ticker'],
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () async {
-                            final confirm = await showDialog<bool>(
-                              context: context,
-                              builder:
-                                  (_) => AlertDialog(
-                                    title: const Text('Remover ativo'),
-                                    content: const Text(
-                                      'Deseja remover este ativo?',
+                          const Spacer(),
+                          IconButton(
+                            icon: const Icon(Icons.delete_outline),
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder:
+                                    (_) => AlertDialog(
+                                      title: const Text('Remover ativo'),
+                                      content: const Text(
+                                        'Deseja remover este ativo?',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed:
+                                              () =>
+                                                  Navigator.pop(context, false),
+                                          child: const Text('Cancelar'),
+                                        ),
+                                        TextButton(
+                                          onPressed:
+                                              () =>
+                                                  Navigator.pop(context, true),
+                                          child: const Text('Remover'),
+                                        ),
+                                      ],
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed:
-                                            () => Navigator.pop(context, false),
-                                        child: const Text('Cancelar'),
-                                      ),
-                                      TextButton(
-                                        onPressed:
-                                            () => Navigator.pop(context, true),
-                                        child: const Text('Remover'),
-                                      ),
-                                    ],
-                                  ),
-                            );
-                            if (confirm == true) {
-                              await DatabaseHelper().deleteAsset(asset['id']);
-                              refreshAssets();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                    const Divider(thickness: 1, height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Quantidade', style: theme.textTheme.labelMedium),
-                        Text('$quantity'),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Preço Médio', style: theme.textTheme.labelMedium),
-                        Text('R\$ ${averagePrice.toStringAsFixed(2)}'),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total Investido',
-                          style: theme.textTheme.labelMedium,
-                        ),
-                        Text(
-                          'R\$ ${totalInvested.toStringAsFixed(2)}',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                              );
+                              if (confirm == true) {
+                                await DatabaseHelper().deleteAsset(asset['id']);
+                                refreshAssets();
+                              }
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const Divider(thickness: 1, height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Quantidade',
+                            style: theme.textTheme.labelMedium,
+                          ),
+                          Text('$quantity'),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Preço Médio',
+                            style: theme.textTheme.labelMedium,
+                          ),
+                          Text('R\$ ${averagePrice.toStringAsFixed(2)}'),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total Investido',
+                            style: theme.textTheme.labelMedium,
+                          ),
+                          Text(
+                            'R\$ ${totalInvested.toStringAsFixed(2)}',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -213,45 +207,70 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: const Text('Adicionar Ativo'),
       content: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: _tickerController,
-              decoration: const InputDecoration(labelText: 'Ticker'),
-              validator:
-                  (value) =>
-                      value == null || value.isEmpty
-                          ? 'Campo obrigatório'
-                          : null,
-            ),
-            TextFormField(
-              controller: _quantityController,
-              decoration: const InputDecoration(labelText: 'Quantidade'),
-              keyboardType: const TextInputType.numberWithOptions(),
-              validator:
-                  (value) =>
-                      value == null || value.isEmpty
-                          ? 'Campo obrigatório'
-                          : null,
-            ),
-            TextFormField(
-              controller: _priceController,
-              decoration: const InputDecoration(labelText: 'Preço Médio'),
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _tickerController,
+                decoration: const InputDecoration(
+                  labelText: 'Ticker',
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Campo obrigatório'
+                            : null,
               ),
-              validator:
-                  (value) =>
-                      value == null || value.isEmpty
-                          ? 'Campo obrigatório'
-                          : null,
-            ),
-          ],
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _quantityController,
+                keyboardType: const TextInputType.numberWithOptions(),
+                decoration: const InputDecoration(
+                  labelText: 'Quantidade',
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Campo obrigatório'
+                            : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _priceController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Preço Médio',
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Campo obrigatório'
+                            : null,
+              ),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -259,7 +278,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
           onPressed: () => Navigator.pop(context),
           child: const Text('Cancelar'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               final ticker = _tickerController.text.trim().toUpperCase();
@@ -269,7 +288,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
               );
 
               if (quantity == null || averagePrice == null) {
-                if (!mounted) return;
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Valores numéricos inválidos.')),
                 );
@@ -287,7 +306,7 @@ class _AddAssetDialogState extends State<AddAssetDialog> {
                 widget.onSaved();
                 Navigator.of(context).pop();
               } catch (e) {
-                if (!mounted) return;
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text('Erro ao salvar: $e')));

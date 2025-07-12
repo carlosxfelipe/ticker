@@ -21,12 +21,11 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.light(
-        primary: Colors.blue.shade600,
-        onPrimary: Colors.white,
-        secondary: Colors.blue.shade400,
+      splashFactory: InkSparkle.splashFactory,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.blue,
+        brightness: Brightness.light,
         surface: AppColors.surfaceLight,
-        onSurface: Colors.black,
         error: AppColors.errorLight,
       ),
       scaffoldBackgroundColor: AppColors.scaffoldBackgroundLight,
@@ -39,18 +38,39 @@ class AppTheme {
         bodyColor: Colors.black,
         displayColor: Colors.black,
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        labelStyle: TextStyle(color: Colors.grey.shade700),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ),
     );
   }
 
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.dark(
-        primary: Colors.blue.shade300,
-        onPrimary: Colors.black,
-        secondary: Colors.blue.shade200,
+      splashFactory: InkSparkle.splashFactory,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.blue,
+        brightness: Brightness.dark,
         surface: AppColors.surfaceDark,
-        onSurface: Colors.white,
         error: AppColors.errorDark,
       ),
       scaffoldBackgroundColor: AppColors.scaffoldBackgroundDark,
@@ -62,6 +82,28 @@ class AppTheme {
       textTheme: ThemeData.dark().textTheme.apply(
         bodyColor: Colors.white,
         displayColor: Colors.white,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white10,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        labelStyle: const TextStyle(color: Colors.white70),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
