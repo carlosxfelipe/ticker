@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? iconName;
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onIconPressed;
 
-  const SearchAppBar({super.key, this.iconName, this.onChanged});
+  const SearchAppBar({
+    super.key,
+    this.iconName,
+    this.onChanged,
+    this.onIconPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +35,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                     _getIconByName(iconName!)!,
                     color: theme.colorScheme.onSurface,
                   ),
-                  onPressed: () {
-                    // ação do ícone
-                  },
+                  onPressed: onIconPressed,
                 ),
               ),
             ),
@@ -44,7 +48,6 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   IconData? _getIconByName(String name) {
-    // Adicione mais ícones conforme necessário
     switch (name) {
       case 'shopping_cart_outlined':
         return Icons.shopping_cart_outlined;
@@ -57,7 +60,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
       case 'refresh':
         return Icons.refresh;
       default:
-        return null; // ícone não reconhecido
+        return null;
     }
   }
 }

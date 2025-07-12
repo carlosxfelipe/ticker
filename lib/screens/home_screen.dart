@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:ticker/services/asset_service.dart';
+
 import 'package:ticker/widgets.dart';
 import 'package:ticker/widgets/pie_chart_widget.dart';
 
@@ -10,9 +12,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
-      currentIndex: 0, // Índice correspondente à página de "Início"
+      currentIndex: 0,
       child: Scaffold(
-        appBar: SearchAppBar(iconName: 'refresh'),
+        appBar: SearchAppBar(
+          iconName: 'refresh',
+          onIconPressed: () async {
+            final count = await AssetService.updateAllAssetsPricesFromBrapi();
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$count ativos atualizados com sucesso'),
+                ),
+              );
+            }
+          },
+        ),
         body: const HomeBody(),
       ),
     );
@@ -55,8 +69,6 @@ class _HomeBodyState extends State<HomeBody> {
           if (snapshot.hasError) {
             return const Center(child: Text('Erro ao carregar ativos'));
           }
-
-          final assets = snapshot.data ?? [];
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
