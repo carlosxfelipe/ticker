@@ -18,7 +18,12 @@ class DatabaseHelper {
   Future<Database> _initDb() async {
     final dir = await getApplicationDocumentsDirectory();
     final path = join(dir.path, 'assets.db');
-    return openDatabase(path, version: 1, onCreate: _onCreate);
+    return openDatabase(
+      path,
+      version: 2,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -27,9 +32,16 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
         quantity INTEGER NOT NULL,
-        average_price REAL NOT NULL
+        average_price REAL NOT NULL,
+        current_price REAL
       )
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE assets ADD COLUMN current_price REAL');
+    }
   }
 
   Future<int> insertAsset(Map<String, dynamic> asset) async {
