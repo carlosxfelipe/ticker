@@ -88,64 +88,103 @@ class WalletBodyState extends State<WalletBody> {
                 (asset['average_price'] as num?)?.toDouble() ?? 0.0;
             final totalInvested = quantity * averagePrice;
 
-            return Card(
-              color: cardColors[index % cardColors.length],
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: cardColors[index % cardColors.length],
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        isDark
+                            ? Colors.white.withAlpha(20)
+                            : Colors.black.withAlpha(40),
+                    blurRadius: 12,
+                    spreadRadius: 1,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              margin: const EdgeInsets.only(bottom: 12),
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      asset['ticker'],
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text('Quantidade: $quantity'),
-                    Text('Preço Médio: R\$ ${averagePrice.toStringAsFixed(2)}'),
-                    Text(
-                      'Total Investido: R\$ ${totalInvested.toStringAsFixed(2)}',
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        onPressed: () async {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder:
-                                (_) => AlertDialog(
-                                  title: const Text('Remover ativo'),
-                                  content: const Text(
-                                    'Deseja remover este ativo?',
+                    Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Text(
+                          asset['ticker'],
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder:
+                                  (_) => AlertDialog(
+                                    title: const Text('Remover ativo'),
+                                    content: const Text(
+                                      'Deseja remover este ativo?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.pop(context, false),
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.pop(context, true),
+                                        child: const Text('Remover'),
+                                      ),
+                                    ],
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.pop(context, false),
-                                      child: const Text('Cancelar'),
-                                    ),
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.pop(context, true),
-                                      child: const Text('Remover'),
-                                    ),
-                                  ],
-                                ),
-                          );
-                          if (confirm == true) {
-                            await DatabaseHelper().deleteAsset(asset['id']);
-                            refreshAssets();
-                          }
-                        },
-                      ),
+                            );
+                            if (confirm == true) {
+                              await DatabaseHelper().deleteAsset(asset['id']);
+                              refreshAssets();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    const Divider(thickness: 1, height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Quantidade', style: theme.textTheme.labelMedium),
+                        Text('$quantity'),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Preço Médio', style: theme.textTheme.labelMedium),
+                        Text('R\$ ${averagePrice.toStringAsFixed(2)}'),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total Investido',
+                          style: theme.textTheme.labelMedium,
+                        ),
+                        Text(
+                          'R\$ ${totalInvested.toStringAsFixed(2)}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
