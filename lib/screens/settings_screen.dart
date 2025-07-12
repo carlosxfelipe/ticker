@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:ticker/database/database_helper.dart';
+import 'package:ticker/services/backup_service.dart';
 import 'package:ticker/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -32,13 +33,10 @@ class SettingsBody extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.settings,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Icon(Icons.storage, color: Theme.of(context).colorScheme.primary),
               const SizedBox(width: 8),
               Text(
-                'Configurações',
+                'Gerenciamento de Dados',
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -84,6 +82,12 @@ class SettingsBody extends StatelessWidget {
                 }
               }
             },
+          ),
+          const SizedBox(height: 12),
+          Button(
+            label: 'Compartilhar Banco de Dados',
+            icon: Icons.share,
+            onPressed: () => BackupService.exportDatabase(context),
           ),
           const SizedBox(height: 32),
           Text(
