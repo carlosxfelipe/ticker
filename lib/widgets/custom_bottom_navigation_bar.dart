@@ -29,7 +29,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         context.go('/wallet');
         break;
       case 2:
-        context.go('/profile');
+        context.go('/settings');
         break;
     }
   }
@@ -65,9 +65,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              widget.currentIndex == 2 ? Icons.person : Icons.person_outline,
+              widget.currentIndex == 2
+                  ? Icons.settings
+                  : Icons.settings_outlined,
             ),
-            label: 'Perfil',
+            label: 'Configurações',
           ),
         ],
       ),

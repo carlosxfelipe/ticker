@@ -35,9 +35,9 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage(child: WalletScreen()),
     ),
     GoRoute(
-      path: '/profile',
+      path: '/settings',
       pageBuilder:
-          (context, state) => NoTransitionPage(child: const ProfileScreen()),
+          (context, state) => NoTransitionPage(child: const SettingsScreen()),
     ),
   ],
 );

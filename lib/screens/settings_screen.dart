@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/widgets.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
-      currentIndex: 2, // Índice correspondente à página de "Perfil"
+      currentIndex: 2, // Índice correspondente à página de "Configurações"
       child: Scaffold(
-        appBar: CustomAppBar(titleText: 'Perfil', onIconPressed: () {}),
-        body: const ProfileBody(),
+        appBar: CustomAppBar(titleText: 'Configurações', onIconPressed: () {}),
+        body: const SettingsBody(),
       ),
     );
   }
 }
 
-class ProfileBody extends StatelessWidget {
-  const ProfileBody({super.key});
+class SettingsBody extends StatelessWidget {
+  const SettingsBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,22 @@ class ProfileBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Tela de Perfil', style: TextStyle(fontSize: 17.0)),
+          // const Text('Tela de Perfil', style: TextStyle(fontSize: 17.0)),
+          Row(
+            children: [
+              Icon(
+                Icons.settings,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Configurações',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
           const SizedBox(height: 24),
           Button(
             label: 'Apagar Base de Dados',
