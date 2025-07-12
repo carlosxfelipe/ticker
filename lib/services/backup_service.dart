@@ -31,7 +31,7 @@ class BackupService {
         ShareParams(
           files: [XFile(exportPath)],
           fileNameOverrides: ['assets_backup.db'],
-          text: 'Backup do banco de dados (.db)',
+          // text: 'Backup do banco de dados (.db)',
           sharePositionOrigin: Rect.zero,
         ),
       );
