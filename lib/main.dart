@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ticker/theme/theme.dart';
 import 'package:ticker/routes/router.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Carrega as variáveis de ambiente
+  await dotenv.load(fileName: ".env");
+
   runApp(const MainApp());
 }
 

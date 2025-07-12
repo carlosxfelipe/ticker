@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
@@ -11,7 +12,13 @@ class WalletScreen extends StatelessWidget {
 
   Future<void> updateAllCurrentPrices(BuildContext context) async {
     final assets = await DatabaseHelper().getAllAssets();
-    final dio = Dio();
+
+    final dio = Dio(
+      BaseOptions(
+        headers: {'Authorization': 'Bearer ${dotenv.env['BRAPI_API_KEY']}'},
+      ),
+    );
+
     int updatedCount = 0;
 
     for (final asset in assets) {
