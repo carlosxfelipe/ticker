@@ -5,14 +5,19 @@ import 'package:ticker/services/asset_service.dart';
 import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/widgets.dart';
 
-class WalletScreen extends StatelessWidget {
-  WalletScreen({super.key});
+class WalletScreen extends StatefulWidget {
+  const WalletScreen({super.key});
 
+  @override
+  State<WalletScreen> createState() => _WalletScreenState();
+}
+
+class _WalletScreenState extends State<WalletScreen> {
   final GlobalKey<WalletBodyState> walletBodyKey = GlobalKey<WalletBodyState>();
+  final TextEditingController _searchController = TextEditingController();
 
   Future<void> updateAllCurrentPrices(BuildContext context) async {
     final updatedCount = await AssetService.updateAllAssetsPricesFromBrapi();
-
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$updatedCount ativos atualizados com sucesso')),
@@ -21,17 +26,20 @@ class WalletScreen extends StatelessWidget {
     }
   }
 
+  void _onSearchChanged(String query) {
+    walletBodyKey.currentState?.setSearchQuery(query);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
       currentIndex: 1,
       child: Scaffold(
-        appBar: CustomAppBar(
-          titleText: 'Carteira',
-          iconData: Icons.refresh,
-          onIconPressed: () async {
-            await updateAllCurrentPrices(context);
-          },
+        appBar: SearchAppBar(
+          iconName: 'refresh',
+          onIconPressed: () async => await updateAllCurrentPrices(context),
+          onChanged: _onSearchChanged,
+          controller: _searchController,
         ),
         body: WalletBody(key: walletBodyKey),
         floatingActionButton: FloatingActionButton(
@@ -60,6 +68,7 @@ class WalletBody extends StatefulWidget {
 
 class WalletBodyState extends State<WalletBody> {
   late Future<List<Map<String, dynamic>>> futureAssets;
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -70,6 +79,12 @@ class WalletBodyState extends State<WalletBody> {
   void refreshAssets() {
     setState(() {
       futureAssets = DatabaseHelper().getAllAssets();
+    });
+  }
+
+  void setSearchQuery(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
     });
   }
 
@@ -91,16 +106,24 @@ class WalletBodyState extends State<WalletBody> {
         }
 
         final assets = snapshot.data ?? [];
+        final filteredAssets =
+            _searchQuery.isEmpty
+                ? assets
+                : assets.where((asset) {
+                  final ticker =
+                      (asset['ticker'] as String?)?.toLowerCase() ?? '';
+                  return ticker.contains(_searchQuery);
+                }).toList();
 
-        if (assets.isEmpty) {
-          return const Center(child: Text('Nenhum ativo cadastrado.'));
+        if (filteredAssets.isEmpty) {
+          return const Center(child: Text('Nenhum ativo encontrado.'));
         }
 
         return ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: assets.length,
+          itemCount: filteredAssets.length,
           itemBuilder: (context, index) {
-            final asset = assets[index];
+            final asset = filteredAssets[index];
             final quantity = (asset['quantity'] as int?) ?? 0;
             final averagePrice =
                 (asset['average_price'] as num?)?.toDouble() ?? 0.0;
