@@ -27,8 +27,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       // path: '/home',
       path: '/',
-      pageBuilder:
-          (context, state) => NoTransitionPage(child: const HomeScreen()),
+      pageBuilder: (context, state) => NoTransitionPage(child: HomeScreen()),
     ),
     GoRoute(
       path: '/wallet',

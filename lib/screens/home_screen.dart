@@ -6,17 +6,21 @@ import 'package:ticker/widgets.dart';
 import 'package:ticker/widgets/pie_chart_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final GlobalKey<HomeBodyState> homeBodyKey = GlobalKey<HomeBodyState>();
 
   @override
   Widget build(BuildContext context) {
     return CustomBottomNavigationBar(
       currentIndex: 0,
       child: Scaffold(
-        appBar: SearchAppBar(
-          iconName: 'refresh',
+        appBar: CustomAppBar(
+          titleText: 'Início',
+          iconData: Icons.refresh,
           onIconPressed: () async {
             final count = await AssetService.updateAllAssetsPricesFromBrapi();
+            homeBodyKey.currentState?.reloadAssets();
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -26,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             }
           },
         ),
-        body: const HomeBody(),
+        body: HomeBody(key: homeBodyKey),
       ),
     );
   }
@@ -36,16 +40,22 @@ class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
 
   @override
-  State<HomeBody> createState() => _HomeBodyState();
+  State<HomeBody> createState() => HomeBodyState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class HomeBodyState extends State<HomeBody> {
   late Future<List<Map<String, dynamic>>> futureAssets;
 
   @override
   void initState() {
     super.initState();
     futureAssets = DatabaseHelper().getAllAssets();
+  }
+
+  void reloadAssets() {
+    setState(() {
+      futureAssets = DatabaseHelper().getAllAssets();
+    });
   }
 
   Map<String, double> _calculatePortfolioTotals(
