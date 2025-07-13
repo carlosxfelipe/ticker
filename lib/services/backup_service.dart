@@ -45,13 +45,22 @@ class BackupService {
 
   static Future<void> importDatabase(BuildContext context) async {
     try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['db'],
-      );
+      final result = await FilePicker.platform.pickFiles(type: FileType.any);
       if (result?.files.single.path == null) return;
 
       final selectedFile = File(result!.files.single.path!);
+
+      if (!selectedFile.path.toLowerCase().endsWith('.db')) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Por favor, selecione um arquivo .db válido.'),
+            ),
+          );
+        }
+        return;
+      }
+
       final appDir = await getApplicationDocumentsDirectory();
       final dbPath = join(appDir.path, 'assets.db');
 
