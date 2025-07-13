@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/services/asset_service.dart';
 import 'package:ticker/theme/card_colors.dart';
+import 'package:ticker/theme/theme.dart';
 import 'package:ticker/widgets.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -70,6 +71,20 @@ class WalletBodyState extends State<WalletBody> {
   late Future<List<Map<String, dynamic>>> futureAssets;
   String _searchQuery = '';
 
+  Map<String, Color> _generateColorMap(
+    List<Map<String, dynamic>> assets,
+    List<Color> colorPalette,
+  ) {
+    final tickers = assets.map((asset) => asset['ticker'] as String).toList();
+
+    final Map<String, Color> map = {};
+    for (int i = 0; i < tickers.length; i++) {
+      final ticker = tickers[i];
+      map[ticker] = colorPalette[i % colorPalette.length];
+    }
+    return map;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -119,6 +134,8 @@ class WalletBodyState extends State<WalletBody> {
           return const Center(child: Text('Nenhum ativo encontrado.'));
         }
 
+        final colorMap = _generateColorMap(assets, cardColors);
+
         return ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: filteredAssets.length,
@@ -138,14 +155,20 @@ class WalletBodyState extends State<WalletBody> {
                     ? (profit / totalInvested) * 100
                     : null;
             final isGain = variationPercent != null && variationPercent >= 0;
-            final variationColor = isGain ? Colors.green : Colors.red;
+            final variationColor =
+                isGain
+                    ? AppTheme.successColor(context)
+                    : AppTheme.errorColor(context);
             final variationIcon =
                 isGain ? Icons.arrow_upward : Icons.arrow_downward;
+
+            final ticker = asset['ticker'] as String;
+            final cardColor = colorMap[ticker] ?? cardColors[0];
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Material(
-                color: cardColors[index % cardColors.length],
+                color: cardColor,
                 borderRadius: BorderRadius.circular(16),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
