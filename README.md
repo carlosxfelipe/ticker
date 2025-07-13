@@ -14,36 +14,12 @@
 - 🔀 Navegação com GoRouter;
 - 🇧🇷 Formatação e idioma em português do Brasil (pt_BR).
 
-## 🛠️ Tecnologias
-
-- [Flutter](https://flutter.dev) 3.7.0+
-- [sqflite](https://pub.dev/packages/sqflite)
-- [dio](https://pub.dev/packages/dio)
-- [go_router](https://pub.dev/packages/go_router)
-- [flutter_dotenv](https://pub.dev/packages/flutter_dotenv)
-- [fl_chart](https://pub.dev/packages/fl_chart)
-- [file_picker](https://pub.dev/packages/file_picker)
-- [share_plus](https://pub.dev/packages/share_plus)
-
-## 📦 Estrutura de Pastas
-
-```
-lib/
-├── database/                # Camada de persistência
-├── services/                # Camada de lógica de negócio/API
-├── theme/                   # Temas e paleta de cores
-├── screens/                 # Telas principais: Home, Carteira, Configurações
-├── widgets/                 # Componentes reutilizáveis
-├── routes/                  # Configuração do GoRouter
-├── main.dart                # Ponto de entrada do app
-```
-
 ## 🧪 Como Rodar
 
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/ticker.git
+   git clone https://github.com/carlosxfelipe/ticker.git
    cd ticker
    ```
 
@@ -69,9 +45,9 @@ lib/
 
 ## 🔒 Licença
 
-Este projeto é licenciado sob os termos da **GNU General Public License v2.0 (GPLv2)**.
+Este projeto é licenciado sob os termos da **GNU General Public License v3.0 or later**.
 
-Você pode ver a licença completa em [`LICENSE`](./LICENSE) ou acessá-la diretamente [aqui](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+Você pode ver a licença completa em [`LICENSE`](./LICENSE) ou acessá-la diretamente [aqui](https://www.gnu.org/licenses/gpl-3.0.txt).
 
 ---
 
