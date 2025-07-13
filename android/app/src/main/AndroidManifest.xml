@@ -3,10 +3,14 @@
     <!-- Permissão necessária para acesso à internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permissão necessária para acessar o armazenamento externo -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:label="ticker"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"

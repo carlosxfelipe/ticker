@@ -50,5 +50,18 @@
 	<array>
 		<string>https</string>
 	</array>
+
+	<!-- Permissão para acessar arquivos (requerida para iOS 14+) -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Este app precisa acessar arquivos para importar o banco de dados.</string>
+
+	<!-- Permite abrir arquivos diretamente de outros apps -->
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+
+	<!-- Habilita o browser de documentos no file_picker -->
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
+
 </dict>
 </plist>
