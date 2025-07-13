@@ -4,12 +4,14 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? iconName;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onIconPressed;
+  final TextEditingController? controller;
 
   const SearchAppBar({
     super.key,
     this.iconName,
     this.onChanged,
     this.onIconPressed,
+    this.controller,
   });
 
   @override
@@ -24,7 +26,10 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Expanded(
             flex: hasValidIcon ? 7 : 8,
-            child: SearchAppBarContent(onChanged: onChanged),
+            child: SearchAppBarContent(
+              onChanged: onChanged,
+              controller: controller,
+            ),
           ),
           if (hasValidIcon)
             Expanded(
@@ -67,8 +72,9 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class SearchAppBarContent extends StatelessWidget {
   final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
 
-  const SearchAppBarContent({super.key, this.onChanged});
+  const SearchAppBarContent({super.key, this.onChanged, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,7 @@ class SearchAppBarContent extends StatelessWidget {
     return SizedBox(
       height: 45,
       child: TextField(
+        controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: 'Buscar...',
