@@ -1,4 +1,4 @@
-package com.example.ticker
+package com.carlosxfelipe.ticker
 
 import io.flutter.embedding.android.FlutterActivity
 
