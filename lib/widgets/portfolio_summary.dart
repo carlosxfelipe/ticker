@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/theme/theme.dart';
 
 class PortfolioSummary extends StatelessWidget {
@@ -43,9 +44,10 @@ class PortfolioSummary extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildItem('Investido', formatter.format(totalInvested)),
-            _buildItem('Atual', formatter.format(totalCurrent)),
+            _buildItem(context, 'Investido', formatter.format(totalInvested)),
+            _buildItem(context, 'Atual', formatter.format(totalCurrent)),
             _buildItem(
+              context,
               'Variação',
               '${variationPercent.toStringAsFixed(2)}%',
               color: variationColor,
@@ -57,15 +59,27 @@ class PortfolioSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(String label, String value, {Color? color}) {
+  Widget _buildItem(
+    BuildContext context,
+    String label,
+    String value, {
+    Color? color,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(fontSize: 12)),
         const SizedBox(height: 4),
-        Text(
-          value,
-          style: TextStyle(fontWeight: FontWeight.bold, color: color),
+        ValueListenableBuilder<bool>(
+          valueListenable: PrivacySettings.of(context).hideValues,
+          builder: (context, hide, _) {
+            final displayValue =
+                (label == 'Variação') ? value : (hide ? 'R\$ ****' : value);
+            return Text(
+              displayValue,
+              style: TextStyle(fontWeight: FontWeight.bold, color: color),
+            );
+          },
         ),
       ],
     );

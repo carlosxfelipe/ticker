@@ -16,16 +16,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/theme/theme.dart';
 import 'package:ticker/routes/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Carrega as variáveis de ambiente
   await dotenv.load(fileName: ".env");
 
-  runApp(const MainApp());
+  runApp(
+    PrivacySettings(hideValues: ValueNotifier(false), child: const MainApp()),
+  );
 }
 
 class MainApp extends StatelessWidget {

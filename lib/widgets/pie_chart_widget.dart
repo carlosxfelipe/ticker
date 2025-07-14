@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:ticker/database/database_helper.dart';
+import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/theme/card_colors.dart';
 
 class AssetsPieChart extends StatelessWidget {
@@ -99,14 +100,16 @@ class AssetsPieChart extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Total', style: Theme.of(context).textTheme.bodySmall),
-                    const SizedBox(height: 4),
-                    Text(
-                      totalFormatted,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+                    ValueListenableBuilder<bool>(
+                      valueListenable: PrivacySettings.of(context).hideValues,
+                      builder: (context, hide, _) {
+                        return Text(
+                          hide ? 'R\$ ****' : totalFormatted,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        );
+                      },
                     ),
                   ],
                 ),

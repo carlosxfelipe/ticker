@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/services/backup_service.dart';
 import 'package:ticker/widgets.dart';
@@ -98,6 +99,43 @@ class SettingsBody extends StatelessWidget {
             label: 'Importar Banco de Dados',
             icon: Icons.upload_file,
             onPressed: () => BackupService.importDatabase(context),
+          ),
+          const SizedBox(height: 32),
+          Row(
+            children: [
+              Icon(
+                Icons.privacy_tip,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Privacidade',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Ocultar valores sensíveis',
+                style: TextStyle(fontSize: 16),
+              ),
+              ValueListenableBuilder<bool>(
+                valueListenable: PrivacySettings.of(context).hideValues,
+                builder: (context, value, _) {
+                  return Switch(
+                    value: value,
+                    onChanged: (newValue) {
+                      PrivacySettings.of(context).hideValues.value = newValue;
+                    },
+                  );
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 32),
           Row(

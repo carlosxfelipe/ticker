@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/services/asset_service.dart';
+import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/theme/card_colors.dart';
 import 'package:ticker/theme/theme.dart';
 import 'package:ticker/widgets.dart';
@@ -240,7 +241,13 @@ class WalletBodyState extends State<WalletBody> {
                             'Quantidade',
                             style: theme.textTheme.labelMedium,
                           ),
-                          Text('$quantity'),
+                          ValueListenableBuilder<bool>(
+                            valueListenable:
+                                PrivacySettings.of(context).hideValues,
+                            builder: (context, hide, _) {
+                              return Text(hide ? '****' : '$quantity');
+                            },
+                          ),
                         ],
                       ),
                       const SizedBox(height: 6),
@@ -262,11 +269,19 @@ class WalletBodyState extends State<WalletBody> {
                             'Total Investido',
                             style: theme.textTheme.labelMedium,
                           ),
-                          Text(
-                            'R\$ ${totalInvested.toStringAsFixed(2)}',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                          ValueListenableBuilder<bool>(
+                            valueListenable:
+                                PrivacySettings.of(context).hideValues,
+                            builder: (context, hide, _) {
+                              return Text(
+                                hide
+                                    ? 'R\$ ****'
+                                    : 'R\$ ${totalInvested.toStringAsFixed(2)}',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -290,7 +305,17 @@ class WalletBodyState extends State<WalletBody> {
                               'Valor Atual',
                               style: theme.textTheme.labelMedium,
                             ),
-                            Text('R\$ ${totalCurrent!.toStringAsFixed(2)}'),
+                            ValueListenableBuilder<bool>(
+                              valueListenable:
+                                  PrivacySettings.of(context).hideValues,
+                              builder: (context, hide, _) {
+                                return Text(
+                                  hide
+                                      ? 'R\$ ****'
+                                      : 'R\$ ${totalCurrent!.toStringAsFixed(2)}',
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ],
@@ -303,12 +328,20 @@ class WalletBodyState extends State<WalletBody> {
                               'Resultado',
                               style: theme.textTheme.labelMedium,
                             ),
-                            Text(
-                              'R\$ ${profit.toStringAsFixed(2)}',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: variationColor,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            ValueListenableBuilder<bool>(
+                              valueListenable:
+                                  PrivacySettings.of(context).hideValues,
+                              builder: (context, hide, _) {
+                                return Text(
+                                  hide
+                                      ? 'R\$ ****'
+                                      : 'R\$ ${profit.toStringAsFixed(2)}',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: variationColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
