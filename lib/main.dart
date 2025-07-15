@@ -25,10 +25,9 @@ import 'package:ticker/auth_gate.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  final hideValues = await PrivacySettings.loadPreferences();
 
-  runApp(
-    PrivacySettings(hideValues: ValueNotifier(false), child: const AuthGate()),
-  );
+  runApp(PrivacySettings(hideValues: hideValues, child: const AuthGate()));
 }
 
 class MainApp extends StatelessWidget {
