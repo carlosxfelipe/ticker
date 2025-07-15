@@ -13,7 +13,7 @@ class AssetService {
       ),
     );
 
-    final yahooDio = Dio();
+    // final yahooDio = Dio();
 
     int updatedCount = 0;
 
@@ -37,24 +37,24 @@ class AssetService {
       }
 
       // Fallback com Yahoo se BRAPI falhar
-      if (currentPrice == null) {
-        final yahooTicker = '${ticker.toUpperCase()}.SA';
-        try {
-          final response = await yahooDio.get(
-            'https://query1.finance.yahoo.com/v7/finance/quote',
-            queryParameters: {'symbols': yahooTicker},
-          );
+      // if (currentPrice == null) {
+      //   final yahooTicker = '${ticker.toUpperCase()}.SA';
+      //   try {
+      //     final response = await yahooDio.get(
+      //       'https://query1.finance.yahoo.com/v7/finance/quote',
+      //       queryParameters: {'symbols': yahooTicker},
+      //     );
 
-          final results = response.data['quoteResponse']['result'];
-          if (results != null && results.isNotEmpty) {
-            currentPrice =
-                (results[0]['regularMarketPrice'] as num?)?.toDouble();
-            source = 'yahoo';
-          }
-        } catch (_) {
-          // Silenciar erro
-        }
-      }
+      //     final results = response.data['quoteResponse']['result'];
+      //     if (results != null && results.isNotEmpty) {
+      //       currentPrice =
+      //           (results[0]['regularMarketPrice'] as num?)?.toDouble();
+      //       source = 'yahoo';
+      //     }
+      //   } catch (_) {
+      //     // Silenciar erro
+      //   }
+      // }
 
       // Atualiza no banco se conseguiu preço
       if (currentPrice != null) {
