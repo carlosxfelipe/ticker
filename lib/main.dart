@@ -28,6 +28,16 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
 
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+    ),
+  );
+
   final biometricEnabled = await SettingsService.isBiometricEnabled();
 
   if (biometricEnabled) {
