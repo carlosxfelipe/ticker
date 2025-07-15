@@ -6,6 +6,9 @@
     <!-- Permissão necessária para acessar o armazenamento externo -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- Permissão necessária para acessar a biometria -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
         android:label="ticker"
         android:name="${applicationName}"

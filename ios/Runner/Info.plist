@@ -63,5 +63,9 @@
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
 
+	<!-- Permissão para acessar a biometria -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Usamos o Face ID para proteger seus dados.</string>
+
 </dict>
 </plist>

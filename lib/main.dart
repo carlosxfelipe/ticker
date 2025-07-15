@@ -20,11 +20,38 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/theme/theme.dart';
 import 'package:ticker/routes/router.dart';
+import 'package:ticker/services/settings_service.dart';
+import 'package:ticker/services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: ".env");
+
+  final biometricEnabled = await SettingsService.isBiometricEnabled();
+
+  if (biometricEnabled) {
+    final authenticated = await AuthService.authenticate();
+    if (!authenticated) {
+      runApp(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          home: const Scaffold(
+            body: Center(
+              child: Text(
+                'Autenticação necessária para continuar',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+  }
 
   runApp(
     PrivacySettings(hideValues: ValueNotifier(false), child: const MainApp()),
@@ -44,9 +71,7 @@ class MainApp extends StatelessWidget {
       routerConfig: router,
       builder: (context, child) {
         final brightness = MediaQuery.of(context).platformBrightness;
-
         AppTheme.setSystemUIOverlayStyle(brightness);
-
         return child!;
       },
     );

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ticker/shared/privacy_settings.dart';
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/services/backup_service.dart';
+import 'package:ticker/services/settings_service.dart';
 import 'package:ticker/widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -22,8 +23,23 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class SettingsBody extends StatelessWidget {
+class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
+
+  @override
+  State<SettingsBody> createState() => _SettingsBodyState();
+}
+
+class _SettingsBodyState extends State<SettingsBody> {
+  final ValueNotifier<bool> biometricEnabled = ValueNotifier(false);
+
+  @override
+  void initState() {
+    super.initState();
+    SettingsService.isBiometricEnabled().then((enabled) {
+      biometricEnabled.value = enabled;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +91,6 @@ class SettingsBody extends StatelessWidget {
                       ],
                     ),
               );
-
               if (confirm == true) {
                 await DatabaseHelper().clearDatabase();
                 if (context.mounted) {
@@ -131,6 +146,28 @@ class SettingsBody extends StatelessWidget {
                     value: value,
                     onChanged: (newValue) {
                       PrivacySettings.of(context).hideValues.value = newValue;
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Solicitar biometria ao iniciar',
+                style: TextStyle(fontSize: 16),
+              ),
+              ValueListenableBuilder<bool>(
+                valueListenable: biometricEnabled,
+                builder: (context, value, _) {
+                  return Switch(
+                    value: value,
+                    onChanged: (newValue) async {
+                      await SettingsService.setBiometricEnabled(newValue);
+                      biometricEnabled.value = newValue;
                     },
                   );
                 },
