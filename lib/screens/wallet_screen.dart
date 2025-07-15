@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/services/asset_service.dart';
@@ -166,6 +167,11 @@ class WalletBodyState extends State<WalletBody> {
             final ticker = asset['ticker'] as String;
             final cardColor = colorMap[ticker] ?? cardColors[0];
 
+            final currencyFormat = NumberFormat.currency(
+              locale: 'pt_BR',
+              symbol: 'R\$',
+            );
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Material(
@@ -258,7 +264,7 @@ class WalletBodyState extends State<WalletBody> {
                             'Preço Médio',
                             style: theme.textTheme.labelMedium,
                           ),
-                          Text('R\$ ${averagePrice.toStringAsFixed(2)}'),
+                          Text(currencyFormat.format(averagePrice)),
                         ],
                       ),
                       const SizedBox(height: 6),
@@ -276,7 +282,7 @@ class WalletBodyState extends State<WalletBody> {
                               return Text(
                                 hide
                                     ? 'R\$ ****'
-                                    : 'R\$ ${totalInvested.toStringAsFixed(2)}',
+                                    : currencyFormat.format(totalInvested),
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -294,7 +300,7 @@ class WalletBodyState extends State<WalletBody> {
                               'Preço Atual',
                               style: theme.textTheme.labelMedium,
                             ),
-                            Text('R\$ ${currentPrice.toStringAsFixed(2)}'),
+                            Text(currencyFormat.format(currentPrice)),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -312,7 +318,7 @@ class WalletBodyState extends State<WalletBody> {
                                 return Text(
                                   hide
                                       ? 'R\$ ****'
-                                      : 'R\$ ${totalCurrent!.toStringAsFixed(2)}',
+                                      : currencyFormat.format(totalCurrent),
                                 );
                               },
                             ),
@@ -335,7 +341,7 @@ class WalletBodyState extends State<WalletBody> {
                                 return Text(
                                   hide
                                       ? 'R\$ ****'
-                                      : 'R\$ ${profit.toStringAsFixed(2)}',
+                                      : currencyFormat.format(profit),
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: variationColor,
                                     fontWeight: FontWeight.w600,
