@@ -5,9 +5,9 @@
 <p align="center">
   <table>
     <tr>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-08-10-869.jpg" alt="Tela 1" width="300"/></td>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-08-51-072.jpg" alt="Tela 2" width="300"/></td>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-09-02-877.jpg" alt="Tela 3" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.08.45.png" alt="Tela 1" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.08.48.png" alt="Tela 2" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.08.52.png" alt="Tela 3" width="300"/></td>
     </tr>
   </table>
 </p>
@@ -15,9 +15,9 @@
 <p align="center">
   <table>
     <tr>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-08-29-083.jpg" alt="Tela 1" width="300"/></td>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-08-38-398.jpg" alt="Tela 2" width="300"/></td>
-      <td><img src="./screenshots/Screenshot_2025-07-13-17-09-13-369.jpg" alt="Tela 3" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.09.01.png" alt="Tela 1" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.09.04.png" alt="Tela 2" width="300"/></td>
+      <td><img src="./screenshots/Simulator Screenshot - iPhone 16 Plus - 2025-07-24 at 20.09.07.png" alt="Tela 3" width="300"/></td>
     </tr>
   </table>
 </p>
