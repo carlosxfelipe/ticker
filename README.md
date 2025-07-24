@@ -31,7 +31,6 @@
 - 🔄 Atualização automática dos preços via API [Brapi.dev](https://brapi.dev);
 - 🌙 Suporte a temas claro e escuro;
 - 🔐 Variáveis sensíveis (.env) para chaves de API;
-- 🔀 Navegação com GoRouter;
 - 🇧🇷 Formatação e idioma em português do Brasil (pt_BR).
 
 ## 🧪 Como Rodar
