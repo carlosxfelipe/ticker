@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math' as math;
 
 import 'package:ticker/database/database_helper.dart';
 import 'package:ticker/shared/privacy_settings.dart';
@@ -83,17 +84,21 @@ class AssetsPieChart extends StatelessWidget {
               );
             }).toList();
 
+        final screenHeight = MediaQuery.of(context).size.height;
+        final chartSize = math.max(360.0, screenHeight * 0.5);
+        final centerSpaceRadius = math.max(60.0, chartSize * 0.17);
+
         return Center(
           child: SizedBox(
-            height: 360,
-            width: 360,
+            height: chartSize,
+            width: chartSize,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 PieChart(
                   PieChartData(
                     sections: chartSections,
-                    centerSpaceRadius: 60,
+                    centerSpaceRadius: centerSpaceRadius,
                     sectionsSpace: 2,
                   ),
                 ),
