@@ -10,10 +10,8 @@ class AuthService {
 
     return await _auth.authenticate(
       localizedReason: 'Autentique-se para abrir o Ticker',
-      options: const AuthenticationOptions(
-        biometricOnly: true,
-        stickyAuth: true,
-      ),
+      biometricOnly: true,
+      persistAcrossBackgrounding: true,
     );
   }
 }
